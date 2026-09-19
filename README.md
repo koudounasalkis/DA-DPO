@@ -15,16 +15,18 @@ Our results demonstrate a reduction in subgroup bias by up to **48.5%** while ma
 
 ## Main Experimental Setup
 
-* **Backbone Model:** [Qwen2.5-Omni-7B](https://huggingface.co/Qwen/Qwen2.5-Omni-7B).
+* **Backbone Models:** [Qwen2.5-Omni-7B](https://huggingface.co/Qwen/Qwen2.5-Omni-7B) and [Phi4-MM](https://huggingface.co/microsoft/Phi-4-multimodal-instruct).
 * **Adaptation Method:** Low-Rank Adaptation (LoRA) with $r=128$ and $\alpha=256$.
 * **Training Stages:**
-    * **SFT:** Supervised Fine-Tuning on ground-truth transcriptions.
-    * **Preference Alignment:** 1 epoch of DA-DPO using the SFT checkpoint as the base policy.
+    * **SFT:** Supervised Fine-Tuning on ground-truth transcriptions, 3 epochs with a learning rate of 2e-5 and a batch size of 8.
+    * **Preference Alignment:** 1 epoch of DA-DPO using the SFT checkpoint as the base policy, global batch size of 8 (2 x 4 accumulation steps), and a learning rate of 5e-7.
 * **Optimization Details:** 
     * $\beta = 0.1$ (DPO hyperparameter).
     * $\lambda = 1.0$ (DA-DPO penalty coefficient).
     * Minimum support threshold for subgroup discovery: $0.03$.
-
+    * Hard negative threshold $\tau_{\text{WER}} = 0.6$.
+* **Machine:** Single NVIDIA A100 GPU 80GB.
+      
 ---
 
 ## Metadata Specification
